@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQlAirlines.Api", "GraphQlAirlines.Api\GraphQlAirlines.Api.csproj", "{CFDBE8EC-715F-4456-8861-E164FEDB2FFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQlAirlines.Data", "GraphQlAirlines.Data\GraphQlAirlines.Data.csproj", "{4D82E2B5-6FF2-4158-9D48-E2913F2D190E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFDBE8EC-715F-4456-8861-E164FEDB2FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFDBE8EC-715F-4456-8861-E164FEDB2FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFDBE8EC-715F-4456-8861-E164FEDB2FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFDBE8EC-715F-4456-8861-E164FEDB2FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D82E2B5-6FF2-4158-9D48-E2913F2D190E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D82E2B5-6FF2-4158-9D48-E2913F2D190E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D82E2B5-6FF2-4158-9D48-E2913F2D190E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D82E2B5-6FF2-4158-9D48-E2913F2D190E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
