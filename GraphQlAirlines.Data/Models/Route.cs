@@ -2,14 +2,11 @@
 {
     public class Route
     {
-        public Route(string airline, int airlineId, string sourceAirport, int sourceAirportId,
-            string destinationAirport, int destinationAirportId, bool codeShare, string stops, string equipment)
+        public Route(string airline, int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, string stops, string equipment)
         {
             Airline = airline;
             AirlineId = airlineId;
-            SourceAirport = sourceAirport;
             SourceAirportId = sourceAirportId;
-            DestinationAirport = destinationAirport;
             DestinationAirportId = destinationAirportId;
             CodeShare = codeShare;
             Stops = stops;
@@ -27,19 +24,9 @@
         public int AirlineId { get; }
 
         /// <summary>
-        ///     3-letter (IATA) or 4-letter (ICAO) code of the source airport.
-        /// </summary>
-        public string SourceAirport { get; }
-
-        /// <summary>
         ///     Unique OpenFlights identifier for source airport (see Airport)
         /// </summary>
         public int SourceAirportId { get; }
-
-        /// <summary>
-        ///     3-letter (IATA) or 4-letter (ICAO) code of the destination airport.
-        /// </summary>
-        public string DestinationAirport { get; }
 
         /// <summary>
         ///     Unique OpenFlights identifier for destination airport (see Airport)
