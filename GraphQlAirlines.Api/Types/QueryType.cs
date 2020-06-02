@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,14 +25,20 @@ namespace GraphQlAirlines.Api.Types
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AirlineType>> GetAirlines()
+        public async Task<IEnumerable<AirlineType>> GetAirlines(int? offset, int? limit)
         {
-            return (await _dataStore.FetchAllAirlinesAsync()).Select(_mapper.Map<AirlineType>);
+            return (await _dataStore.FetchAllAirlinesAsync())
+                .Skip(offset ?? 0)
+                .Take(Math.Min(limit ?? 10, 100))
+                .Select(_mapper.Map<AirlineType>);
         }
         
-        public async Task<IEnumerable<RouteType>> GetRoutes()
+        public async Task<IEnumerable<RouteType>> GetRoutes(int? offset, int? limit)
         {
-            return (await _dataStore.FetchAllRoutesAsync()).Select(_mapper.Map<RouteType>);
+            return (await _dataStore.FetchAllRoutesAsync())
+                .Skip(offset ?? 0)
+                .Take(Math.Min(limit ?? 10, 100))
+                .Select(_mapper.Map<RouteType>);
         }
     }
 }
