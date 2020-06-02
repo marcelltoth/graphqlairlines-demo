@@ -27,7 +27,8 @@
         public int DestinationAirportId { get; }
 
         /// <summary>
-        ///     <code>true</code> if this flight is a codeshare (that is, not operated by Airline, but another carrier), <code>false</code> otherwise.
+        ///     <code>true</code> if this flight is a codeshare (that is, not operated by Airline, but another carrier),
+        ///     <code>false</code> otherwise.
         /// </summary>
         public bool CodeShare { get; }
 

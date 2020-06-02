@@ -10,7 +10,8 @@ namespace GraphQlAirlines.Api.Types
 {
     public class AirportType
     {
-        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone, GraphQlDstType dst)
+        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone,
+            GraphQlDstType dst)
         {
             Id = id;
             Name = name;
@@ -85,7 +86,7 @@ namespace GraphQlAirlines.Api.Types
                 ? _mapper.Map<CountryType>(country)
                 : new CountryType(airport.Country, null, null);
         }
-        
+
         public async Task<IEnumerable<RouteType>> GetRoutes([Parent] AirportType airport)
         {
             var routes = await GetRoutesInternal(airport);

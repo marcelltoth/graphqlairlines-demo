@@ -10,9 +10,9 @@
         }
 
         public string Name { get; }
-        
+
         public string? IsoCode { get; }
-        
+
         public string? DafifCode { get; }
     }
 }

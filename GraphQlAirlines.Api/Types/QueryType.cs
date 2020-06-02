@@ -7,7 +7,6 @@ using GraphQlAirlines.Data;
 
 namespace GraphQlAirlines.Api.Types
 {
-    
     // No data fields on query
     public class QueryType
     {
@@ -15,7 +14,6 @@ namespace GraphQlAirlines.Api.Types
 
     public class QueryResolvers
     {
-
         private readonly IAirlineDataStore _dataStore;
         private readonly IMapper _mapper;
 
@@ -32,7 +30,7 @@ namespace GraphQlAirlines.Api.Types
                 .Take(Math.Min(limit ?? 10, 100))
                 .Select(_mapper.Map<AirlineType>);
         }
-        
+
         public async Task<IEnumerable<RouteType>> GetRoutes(int? offset, int? limit)
         {
             return (await _dataStore.FetchAllRoutesAsync())

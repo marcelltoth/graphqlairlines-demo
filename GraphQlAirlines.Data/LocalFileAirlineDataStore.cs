@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
-using CsvHelper.TypeConversion;
 using GraphQlAirlines.Data.Internal;
 using GraphQlAirlines.Data.Models;
 
@@ -101,14 +100,12 @@ namespace GraphQlAirlines.Data
             using var csvReader = CreateCsvReader(path);
 
             while (await csvReader.ReadAsync())
-            {
                 yield return new Airline(
                     csvReader.GetField<int>(0),
                     csvReader.GetField<string>(1),
                     csvReader.GetField<string>(3),
                     csvReader.GetField<string>(6)
                 );
-            }
         }
 
 
@@ -139,7 +136,7 @@ namespace GraphQlAirlines.Data
             while (await csvReader.ReadAsync())
             {
                 // Ignore incomplete entries
-                if(csvReader.Context.RawRecord.Contains('\\'))
+                if (csvReader.Context.RawRecord.Contains('\\'))
                     continue;
 
                 yield return new Route(
@@ -181,7 +178,7 @@ namespace GraphQlAirlines.Data
                 _ => DstType.Unknown
             };
         }
-        
+
 
         private static string BuildResourceName(string @namespace, string resource)
         {

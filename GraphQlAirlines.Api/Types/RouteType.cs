@@ -20,11 +20,11 @@ namespace GraphQlAirlines.Api.Types
         public int AirlineId { get; }
 
         public int SourceAirportId { get; }
-        
+
         public int DestinationAirportId { get; }
-        
+
         public bool Codeshare { get; }
-        
+
         public int Stops { get; }
     }
 
@@ -43,12 +43,12 @@ namespace GraphQlAirlines.Api.Types
         {
             return _mapper.Map<AirlineType>(await _dataStore.GetAirlineByIdAsync(route.AirlineId));
         }
-        
+
         public async Task<AirportType?> GetSource([Parent] RouteType route)
         {
             return _mapper.Map<AirportType>(await _dataStore.GetAirportByIdAsync(route.SourceAirportId));
         }
-        
+
         public async Task<AirportType?> GetDestination([Parent] RouteType route)
         {
             return _mapper.Map<AirportType>(await _dataStore.GetAirportByIdAsync(route.DestinationAirportId));

@@ -22,7 +22,7 @@ namespace GraphQlAirlines.Api.Types
         public string Name { get; }
 
         public string Iata { get; }
-        
+
         public string Country { get; }
     }
 
@@ -50,13 +50,13 @@ namespace GraphQlAirlines.Api.Types
                 })
             );
         }
-        
+
         public async Task<CountryType> GetOrigin([Parent] AirlineType airline)
         {
             var countries = await _dataStore.FetchAllCountriesAsync();
             return _mapper.Map<CountryType>(countries.FirstOrDefault(c => c.Name == airline.Country));
         }
-        
+
         public async Task<IEnumerable<RouteType>> GetRoutes([Parent] AirlineType airline)
         {
             var routes = await _dataStore.FetchRoutesByAirlineAsync(airline.Id);
