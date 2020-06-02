@@ -63,6 +63,21 @@ namespace GraphQlAirlines.Data
             return (await _dataSet).Routes;
         }
 
+        public async Task<IEnumerable<Route>> FetchRoutesByAirlineAsync(int airlineId)
+        {
+            return (await _dataSet).Routes.Where(r => r.AirlineId == airlineId);
+        }
+
+        public async Task<IEnumerable<Route>> FetchRoutesBySourceAirportAsync(int sourceAirportId)
+        {
+            return (await _dataSet).Routes.Where(r => r.SourceAirportId == sourceAirportId);
+        }
+
+        public async Task<IEnumerable<Route>> FetchRoutesByDestinationAirportAsync(int destinationAirportId)
+        {
+            return (await _dataSet).Routes.Where(r => r.DestinationAirportId == destinationAirportId);
+        }
+
         private static async IAsyncEnumerable<Aircraft> LoadAircraftAsync(string path)
         {
             using var streamReader = new StreamReader(path);
