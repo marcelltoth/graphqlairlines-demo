@@ -1,4 +1,5 @@
 using GraphQlAirlines.Api.Types;
+using GraphQlAirlines.Data;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,8 @@ namespace GraphQlAirlines.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IAirlineDataStore, LocalFileAirlineDataStore>();
+            
             services.AddGraphQL(
                 SchemaBuilder.New()
                     .AddDocumentFromFile("./schema.graphql")

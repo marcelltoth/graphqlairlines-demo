@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using GraphQlAirlines.Data;
 using GraphQlAirlines.Data.Models;
 using HotChocolate.Types;
 
@@ -15,9 +17,17 @@ namespace GraphQlAirlines.Api.Types
     public class QueryResolvers
     {
 
-        public Task<IEnumerable<Airline>> GetAirlines()
+        private readonly IAirlineDataStore _dataStore;
+
+        public QueryResolvers(IAirlineDataStore dataStore)
         {
-            throw new NotImplementedException();
+            _dataStore = dataStore;
+        }
+
+        public async Task<IEnumerable<AirlineType>> GetAirlines()
+        {
+            return (await _dataStore.FetchAllAirlinesAsync()).Select(a =>
+                new AirlineType(a.AirlineId, a.Name, a.Iata, a.Country));
         }
         
         public Task<IEnumerable<RouteType>> GetRoutes()
