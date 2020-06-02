@@ -25,13 +25,13 @@ namespace GraphQlAirlines.Data
 
         public LocalFileAirlineDataStore()
         {
-            _dataSet = new AsyncLazy<DataSet>(async () => new DataSet
-            {
-                Aircraft = await LoadAircraftAsync(Path.Combine(DataFolder, AircraftFile)).ToListAsync(),
-                Airlines = await LoadAirlinesAsync(Path.Combine(DataFolder, AirlinesFile)).ToListAsync(),
-                Airports = await LoadAirportsAsync(Path.Combine(DataFolder, AirportsFile)).ToListAsync(),
-                Routes = await LoadRoutesAsync(Path.Combine(DataFolder, RoutesFile)).ToListAsync(),
-            });
+            _dataSet = new AsyncLazy<DataSet>(async () => new DataSet(
+                await LoadAircraftAsync(Path.Combine(DataFolder, AircraftFile)).ToListAsync(),
+                await LoadAirlinesAsync(Path.Combine(DataFolder, AirlinesFile)).ToListAsync(),
+                await LoadAirportsAsync(Path.Combine(DataFolder, AirportsFile)).ToListAsync(),
+                await LoadRoutesAsync(Path.Combine(DataFolder, RoutesFile)).ToListAsync(),
+                await LoadCountriesAsync(Path.Combine(DataFolder, CountriesFile)).ToListAsync()
+            ));
         }
 
         public Task<IEnumerable<Airline>> FetchAllAirlinesAsync()
@@ -156,6 +156,24 @@ namespace GraphQlAirlines.Data
                 }
                 
                 yield return route;
+            }
+        }
+        
+        private static async IAsyncEnumerable<Country> LoadCountriesAsync(string path)
+        {
+            using var streamReader = new StreamReader(path);
+            using var csvReader = new CsvReader(streamReader,
+                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
+
+            while (await csvReader.ReadAsync())
+            {
+                var iso = csvReader.GetField<string>(1);
+                var dafif = csvReader.GetField<string>(2);
+                yield return new Country(
+                    csvReader.GetField<string>(0),
+                    iso == NullFieldValue ? null : iso,
+                    dafif == NullFieldValue ? null : dafif
+                );
             }
         }
 
