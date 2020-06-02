@@ -41,7 +41,7 @@ namespace GraphQlAirlines.Data
 
         public async Task<Airline?> GetAirlineByIdAsync(int id)
         {
-            return (await _dataSet).Airlines.FirstOrDefault(a => a.AirlineId == id);
+            return (await _dataSet).AirlinesById.TryGetValue(id, out Airline value) ? value : null;
         }
 
         public async Task<IEnumerable<Aircraft>> FetchAllAircraftAsync()
@@ -56,7 +56,7 @@ namespace GraphQlAirlines.Data
 
         public async Task<Airport?> GetAirportByIdAsync(int id)
         {
-            return (await _dataSet).Airports.FirstOrDefault(a => a.AirportId == id);
+            return (await _dataSet).AirportsById.TryGetValue(id, out Airport value) ? value : null;
         }
 
         public async Task<IEnumerable<Route>> FetchAllRoutesAsync()
