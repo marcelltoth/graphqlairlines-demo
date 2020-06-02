@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -13,23 +14,23 @@ namespace GraphQlAirlines.Data
 {
     public class LocalFileAirlineDataStore : IAirlineDataStore
     {
-        private const string DataFolder = "./Data";
         private const string AircraftFile = "planes.dat";
         private const string CountriesFile = "countries.dat";
         private const string RoutesFile = "routes.dat";
         private const string AirlinesFile = "airlines.dat";
         private const string AirportsFile = "airports.dat";
         private const string NullFieldValue = "\\N";
+        private static readonly string DataNamespace = $"{nameof(GraphQlAirlines)}.{nameof(Data)}.{nameof(Data)}";
         private readonly AsyncLazy<DataSet> _dataSet;
 
         public LocalFileAirlineDataStore()
         {
             _dataSet = new AsyncLazy<DataSet>(async () => new DataSet(
-                await LoadAircraftAsync(Path.Combine(DataFolder, AircraftFile)).ToListAsync(),
-                await LoadAirlinesAsync(Path.Combine(DataFolder, AirlinesFile)).ToListAsync(),
-                await LoadAirportsAsync(Path.Combine(DataFolder, AirportsFile)).ToListAsync(),
-                await LoadRoutesAsync(Path.Combine(DataFolder, RoutesFile)).ToListAsync(),
-                await LoadCountriesAsync(Path.Combine(DataFolder, CountriesFile)).ToListAsync()
+                await LoadAircraftAsync(BuildResourceName(DataNamespace, AircraftFile)).ToListAsync(),
+                await LoadAirlinesAsync(BuildResourceName(DataNamespace, AirlinesFile)).ToListAsync(),
+                await LoadAirportsAsync(BuildResourceName(DataNamespace, AirportsFile)).ToListAsync(),
+                await LoadRoutesAsync(BuildResourceName(DataNamespace, RoutesFile)).ToListAsync(),
+                await LoadCountriesAsync(BuildResourceName(DataNamespace, CountriesFile)).ToListAsync()
             ));
         }
 
@@ -80,10 +81,8 @@ namespace GraphQlAirlines.Data
 
         private static async IAsyncEnumerable<Aircraft> LoadAircraftAsync(string path)
         {
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader,
-                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
-            
+            using var csvReader = CreateCsvReader(path);
+
             while (await csvReader.ReadAsync())
                 yield return new Aircraft(
                     csvReader.GetField<string>(0),
@@ -91,13 +90,11 @@ namespace GraphQlAirlines.Data
                     csvReader.GetField<string>(2)
                 );
         }
-        
+
         private static async IAsyncEnumerable<Airline> LoadAirlinesAsync(string path)
         {
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader,
-                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
-            
+            using var csvReader = CreateCsvReader(path);
+
             while (await csvReader.ReadAsync())
             {
                 var alias = csvReader.GetField<string>(2);
@@ -113,13 +110,11 @@ namespace GraphQlAirlines.Data
                 );
             }
         }
-        
-        
+
+
         private static async IAsyncEnumerable<Airport> LoadAirportsAsync(string path)
         {
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader,
-                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
+            using var csvReader = CreateCsvReader(path);
 
             while (await csvReader.ReadAsync())
             {
@@ -144,14 +139,12 @@ namespace GraphQlAirlines.Data
 
         private static async IAsyncEnumerable<Route> LoadRoutesAsync(string path)
         {
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader,
-                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
+            using var csvReader = CreateCsvReader(path);
 
             while (await csvReader.ReadAsync())
             {
                 Route route;
-                
+
                 try
                 {
                     route = new Route(
@@ -168,16 +161,14 @@ namespace GraphQlAirlines.Data
                     // Ignore incomplete entries
                     continue;
                 }
-                
+
                 yield return route;
             }
         }
-        
+
         private static async IAsyncEnumerable<Country> LoadCountriesAsync(string path)
         {
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader,
-                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
+            using var csvReader = CreateCsvReader(path);
 
             while (await csvReader.ReadAsync())
             {
@@ -203,6 +194,21 @@ namespace GraphQlAirlines.Data
                 'N' => DstType.None,
                 _ => DstType.Unknown
             };
+        }
+        
+
+        private static string BuildResourceName(string @namespace, string resource)
+        {
+            return $"{@namespace}.{resource}";
+        }
+
+        private static CsvReader CreateCsvReader(string path)
+        {
+            var resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
+            var streamReader = new StreamReader(resourceStream);
+            var csvReader = new CsvReader(streamReader,
+                new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false});
+            return csvReader;
         }
     }
 }

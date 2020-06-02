@@ -6,14 +6,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="Data\routes.dat">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="CsvHelper" Version="15.0.5" />
       <PackageReference Include="System.Linq.Async" Version="4.1.1" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Data\airlines.dat" />
+      <EmbeddedResource Include="Data\airlines.dat" />
+      <None Remove="Data\airports.dat" />
+      <EmbeddedResource Include="Data\airports.dat" />
+      <None Remove="Data\countries.dat" />
+      <EmbeddedResource Include="Data\countries.dat" />
+      <None Remove="Data\planes.dat" />
+      <EmbeddedResource Include="Data\planes.dat">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Data\routes.dat" />
+      <EmbeddedResource Include="Data\routes.dat">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 
 </Project>
