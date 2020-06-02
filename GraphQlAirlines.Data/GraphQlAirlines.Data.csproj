@@ -3,6 +3,15 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
+        
+        <PackageId>MarcellToth.GraphQlAirlines.Data</PackageId>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Summary>Example GraphQL Schema-First Server written in .NET</Summary>
+        <Description>Example GraphQL Schema-First Server written in .NET</Description>
+        <Authors>Marcell Toth</Authors>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/marcelltoth/graphqlairlines-demo</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
