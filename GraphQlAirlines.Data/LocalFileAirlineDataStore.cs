@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace GraphQlAirlines.Data
         private const string AirlinesFile = "airlines.dat";
         private const string AirportsFile = "airports.dat";
         private const string NullFieldValue = "\\N";
-        private AsyncLazy<DataSet> _dataSet;
+        private readonly AsyncLazy<DataSet> _dataSet;
 
         public LocalFileAirlineDataStore()
         {
@@ -34,34 +33,34 @@ namespace GraphQlAirlines.Data
             ));
         }
 
-        public Task<IEnumerable<Airline>> FetchAllAirlinesAsync()
+        public async Task<IEnumerable<Airline>> FetchAllAirlinesAsync()
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Airlines;
         }
 
-        public Task<Airline> GetAirlineByIdAsync(int id)
+        public async Task<Airline?> GetAirlineByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Airlines.FirstOrDefault(a => a.AirlineId == id);
         }
 
-        public Task<IEnumerable<Aircraft>> FetchAllAircraftAsync()
+        public async Task<IEnumerable<Aircraft>> FetchAllAircraftAsync()
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Aircraft;
         }
 
-        public Task<IEnumerable<Airport>> FetchAllAirportsAsync()
+        public async Task<IEnumerable<Airport>> FetchAllAirportsAsync()
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Airports;
         }
 
-        public Task<Airport> GetAirportByIdAsync(int id)
+        public async Task<Airport?> GetAirportByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Airports.FirstOrDefault(a => a.AirportId == id);
         }
 
-        public Task<IEnumerable<Route>> FetchAllRoutesAsync()
+        public async Task<IEnumerable<Route>> FetchAllRoutesAsync()
         {
-            throw new NotImplementedException();
+            return (await _dataSet).Routes;
         }
 
         private static async IAsyncEnumerable<Aircraft> LoadAircraftAsync(string path)

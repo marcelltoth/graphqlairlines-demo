@@ -8,13 +8,13 @@ namespace GraphQlAirlines.Data
     {
         Task<IEnumerable<Airline>> FetchAllAirlinesAsync();
 
-        Task<Airline> GetAirlineByIdAsync(int id);
+        Task<Airline?> GetAirlineByIdAsync(int id);
         
         Task<IEnumerable<Aircraft>> FetchAllAircraftAsync();
         
         Task<IEnumerable<Airport>> FetchAllAirportsAsync();
 
-        Task<Airport> GetAirportByIdAsync(int id);
+        Task<Airport?> GetAirportByIdAsync(int id);
         
         Task<IEnumerable<Route>> FetchAllRoutesAsync();
     }
