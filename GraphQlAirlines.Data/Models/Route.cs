@@ -2,9 +2,8 @@
 {
     public class Route
     {
-        public Route(string airline, int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, string stops, string equipment)
+        public Route(int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, int stops, string equipment)
         {
-            Airline = airline;
             AirlineId = airlineId;
             SourceAirportId = sourceAirportId;
             DestinationAirportId = destinationAirportId;
@@ -12,11 +11,6 @@
             Stops = stops;
             Equipment = equipment;
         }
-
-        /// <summary>
-        ///     2-letter (IATA) or 3-letter (ICAO) code of the airline.
-        /// </summary>
-        public string Airline { get; }
 
         /// <summary>
         ///     Unique OpenFlights identifier for airline (see Airline).
@@ -41,7 +35,7 @@
         /// <summary>
         ///     Number of stops on this flight (0 for direct)
         /// </summary>
-        public string Stops { get; set; }
+        public int Stops { get; set; }
 
         /// <summary>
         ///     3-letter codes for plane type(s) generally used on this flight, separated by spaces

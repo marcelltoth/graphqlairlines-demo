@@ -2,7 +2,7 @@
 {
     public class Airline
     {
-        public Airline(int airlineId, string name, string alias, string iata, string icao, string callSign,
+        public Airline(int airlineId, string name, string? alias, string iata, string icao, string callSign,
             string country, bool active)
         {
             AirlineId = airlineId;
@@ -28,7 +28,7 @@
         /// <summary>
         ///     Alias of the airline. For example, All Nippon Airways is commonly known as ANA.
         /// </summary>
-        public string Alias { get; }
+        public string? Alias { get; }
 
         /// <summary>
         ///     2-letter IATA code, if available.

@@ -3,8 +3,7 @@
     public class Airport
     {
         public Airport(int airportId, string name, string city, string country, string? iata, string? icao,
-            decimal latitude, decimal longitude, decimal altitude, decimal timezone, DstType dst,
-            string tzDatabaseTimezone)
+            decimal latitude, decimal longitude, decimal altitude, decimal timezone, DstType dst)
         {
             AirportId = airportId;
             Name = name;
@@ -17,7 +16,6 @@
             Altitude = altitude;
             Timezone = timezone;
             Dst = dst;
-            TzDatabaseTimezone = tzDatabaseTimezone;
         }
 
         /// <summary>
@@ -75,10 +73,5 @@
         ///     (None) or U (Unknown). See also: Help: Time
         /// </summary>
         public DstType Dst { get; }
-
-        /// <summary>
-        ///     Timezone in tz (Olson) format, eg. America/Los_Angeles.
-        /// </summary>
-        public string TzDatabaseTimezone { get; }
     }
 }
