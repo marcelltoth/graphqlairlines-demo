@@ -9,10 +9,10 @@ namespace GraphQlAirlines.Api
         public MapperProfile()
         {
             CreateMap<Airline, AirlineType>()
-                .ForCtorParam("id", x => x.MapFrom(src => src.AirlineId))
-                .ForCtorParam("countryCode", x => x.MapFrom(src => src.Country));
+                .ForCtorParam("id", x => x.MapFrom(src => src.AirlineId));
 
-            CreateMap<Airport, AirportType>();
+            CreateMap<Airport, AirportType>()
+                .ForCtorParam("id", x => x.MapFrom(src => src.AirportId));
 
             CreateMap<Country, CountryType>();
 

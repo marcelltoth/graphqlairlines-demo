@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GraphQlAirlines.Data;
-using GraphQlAirlines.Data.Models;
 using HotChocolate;
 
 namespace GraphQlAirlines.Api.Types
 {
     public class AirlineType
     {
-        public AirlineType(int id, string name, string iata, string countryCode)
+        public AirlineType(int id, string name, string iata, string country)
         {
             Id = id;
             Name = name;
             Iata = iata;
-            CountryCode = countryCode;
+            Country = country;
         }
 
-        public int Id { get; set; }
+        public int Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public string Iata { get; set; }
+        public string Iata { get; }
         
-        public string CountryCode { get; set; }
+        public string Country { get; }
     }
 
     public class AirlineResolvers
@@ -56,7 +54,7 @@ namespace GraphQlAirlines.Api.Types
         public async Task<CountryType> GetOrigin([Parent] AirlineType airline)
         {
             var countries = await _dataStore.FetchAllCountriesAsync();
-            return _mapper.Map<CountryType>(countries.FirstOrDefault(c => c.Name == airline.CountryCode));
+            return _mapper.Map<CountryType>(countries.FirstOrDefault(c => c.Name == airline.Country));
         }
         
         public async Task<IEnumerable<RouteType>> GetRoutes([Parent] AirlineType airline)

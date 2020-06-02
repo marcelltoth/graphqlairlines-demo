@@ -1,22 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using GraphQlAirlines.Data;
-using GraphQlAirlines.Data.Models;
 using HotChocolate;
 
 namespace GraphQlAirlines.Api.Types
 {
     public class RouteType
     {
-        public RouteType(int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, int stops, string equipment)
+        public RouteType(int airlineId, int sourceAirportId, int destinationAirportId, bool codeshare, int stops)
         {
             AirlineId = airlineId;
             SourceAirportId = sourceAirportId;
             DestinationAirportId = destinationAirportId;
-            Codeshare = codeShare;
+            Codeshare = codeshare;
             Stops = stops;
-            Equipment = equipment;
         }
 
 
@@ -29,8 +26,6 @@ namespace GraphQlAirlines.Api.Types
         public bool Codeshare { get; }
         
         public int Stops { get; }
-        
-        public string Equipment { get; }
     }
 
     public class RouteResolvers

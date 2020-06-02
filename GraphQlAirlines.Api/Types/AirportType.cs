@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,6 +39,7 @@ namespace GraphQlAirlines.Api.Types
         /// <summary>
         ///     Country or territory where airport is located. See countries.dat to cross-reference to ISO 3166-1 codes.
         /// </summary>
+        [GraphQLIgnore]
         public string Country { get; }
 
         /// <summary>
@@ -70,24 +70,32 @@ namespace GraphQlAirlines.Api.Types
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AirlineType>> GetAirlines([Parent] Airport airport)
+        public async Task<IEnumerable<AirlineType>> GetAirlines([Parent] AirportType airport)
         {
             var routes = await GetRoutesInternal(airport);
             var airlineIds = routes.Select(r => r.AirlineId).Distinct();
             var airlines = await Task.WhenAll(airlineIds.Select(_dataStore.GetAirlineByIdAsync));
             return _mapper.Map<IEnumerable<AirlineType>>(airlines.Where(airline => airline != null));
         }
+
+        public async Task<CountryType> GetCountry([Parent] AirportType airport)
+        {
+            var country = (await _dataStore.FetchAllCountriesAsync()).FirstOrDefault(c => c.Name == airport.Country);
+            return country != null
+                ? _mapper.Map<CountryType>(country)
+                : new CountryType(airport.Country, null, null);
+        }
         
-        public async Task<IEnumerable<RouteType>> GetRoutes([Parent] Airport airport)
+        public async Task<IEnumerable<RouteType>> GetRoutes([Parent] AirportType airport)
         {
             var routes = await GetRoutesInternal(airport);
             return _mapper.Map<IEnumerable<RouteType>>(routes);
         }
 
-        private async Task<IEnumerable<Route>> GetRoutesInternal(Airport airport)
+        private async Task<IEnumerable<Route>> GetRoutesInternal(AirportType airport)
         {
-            return (await _dataStore.FetchRoutesByDestinationAirportAsync(airport.AirportId))
-                .Concat(await _dataStore.FetchRoutesBySourceAirportAsync(airport.AirportId));
+            return (await _dataStore.FetchRoutesByDestinationAirportAsync(airport.Id))
+                .Concat(await _dataStore.FetchRoutesBySourceAirportAsync(airport.Id));
         }
     }
 }
