@@ -97,16 +97,11 @@ namespace GraphQlAirlines.Data
 
             while (await csvReader.ReadAsync())
             {
-                var alias = csvReader.GetField<string>(2);
                 yield return new Airline(
                     csvReader.GetField<int>(0),
                     csvReader.GetField<string>(1),
-                    alias == NullFieldValue ? null : alias,
                     csvReader.GetField<string>(3),
-                    csvReader.GetField<string>(4),
-                    csvReader.GetField<string>(5),
-                    csvReader.GetField<string>(6),
-                    csvReader.GetField<string>(7) == "Y"
+                    csvReader.GetField<string>(6)
                 );
             }
         }
@@ -119,7 +114,6 @@ namespace GraphQlAirlines.Data
             while (await csvReader.ReadAsync())
             {
                 var iata = csvReader.GetField<string>(4);
-                var icao = csvReader.GetField<string>(5);
                 var dstField = csvReader.GetField<string>(10);
                 yield return new Airport(
                     csvReader.GetField<int>(0),
@@ -127,11 +121,7 @@ namespace GraphQlAirlines.Data
                     csvReader.GetField<string>(2),
                     csvReader.GetField<string>(3),
                     iata == NullFieldValue ? null : iata,
-                    icao == NullFieldValue ? null : icao,
                     csvReader.GetField<decimal>(6),
-                    csvReader.GetField<decimal>(7),
-                    csvReader.GetField<decimal>(8),
-                    csvReader.GetField<decimal>(9),
                     dstField == NullFieldValue ? DstType.Unknown : ParseDst(dstField.First())
                 );
             }
@@ -143,26 +133,17 @@ namespace GraphQlAirlines.Data
 
             while (await csvReader.ReadAsync())
             {
-                Route route;
-
-                try
-                {
-                    route = new Route(
-                        csvReader.GetField<int>(1),
-                        csvReader.GetField<int>(3),
-                        csvReader.GetField<int>(5),
-                        csvReader.GetField<string>(6) == "Y",
-                        csvReader.GetField<int>(7),
-                        csvReader.GetField<string>(8)
-                    );
-                }
-                catch (TypeConverterException)
-                {
-                    // Ignore incomplete entries
+                // Ignore incomplete entries
+                if(csvReader.Context.RawRecord.Contains('\\'))
                     continue;
-                }
 
-                yield return route;
+                yield return new Route(
+                    csvReader.GetField<int>(1),
+                    csvReader.GetField<int>(3),
+                    csvReader.GetField<int>(5),
+                    csvReader.GetField<string>(6) == "Y",
+                    csvReader.GetField<int>(7)
+                );
             }
         }
 

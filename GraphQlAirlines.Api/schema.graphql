@@ -8,17 +8,14 @@ type Route{
 	source: Airport!
 	destination: Airport!
 	codeshare: Boolean!
+	stops: Int!
 }
 
 type Airline{
 	id: ID!
 	name: String!
-	alias: String
 	iata: String
-	icao: String
-	callsign: String!
 	origin: Country!
-	active: Boolean!
 	destinations: [Airport!]!
 	routes: [Route!]!
 }
@@ -29,10 +26,6 @@ type Airport{
 	city: String!
 	country: Country!
 	iata: String
-	icao: String
-	latitude: Float!
-	longitude: Float!
-	altitude: Float!
 	timezone: Float!
 	dst: DstType!
 	airlines: [Airline!]!

@@ -7,18 +7,13 @@ namespace GraphQlAirlines.Api.Types
 {
     public class AirportType
     {
-        public AirportType(int id, string name, string city, string country, string? iata, string? icao,
-            decimal latitude, decimal longitude, decimal altitude, decimal timezone, DstType dst)
+        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone, DstType dst)
         {
             Id = id;
             Name = name;
             City = city;
             Country = country;
             Iata = iata;
-            Icao = icao;
-            Latitude = latitude;
-            Longitude = longitude;
-            Altitude = altitude;
             Timezone = timezone;
             Dst = dst;
         }
@@ -47,26 +42,6 @@ namespace GraphQlAirlines.Api.Types
         ///     3-letter IATA code. Null if not assigned/unknown.
         /// </summary>
         public string? Iata { get; }
-
-        /// <summary>
-        ///     4-letter ICAO code. Null if not assigned.
-        /// </summary>
-        public string? Icao { get; }
-
-        /// <summary>
-        ///     Decimal degrees, usually to six significant digits. Negative is South, positive is North.
-        /// </summary>
-        public decimal Latitude { get; }
-
-        /// <summary>
-        ///     Decimal degrees, usually to six significant digits. Negative is West, positive is East.
-        /// </summary>
-        public decimal Longitude { get; }
-
-        /// <summary>
-        ///     In feet.
-        /// </summary>
-        public decimal Altitude { get; }
 
         /// <summary>
         ///     Hours offset from UTC. Fractional hours are expressed as decimals, eg. India is 5.5.

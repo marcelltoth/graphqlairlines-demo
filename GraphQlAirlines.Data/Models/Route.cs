@@ -2,14 +2,13 @@
 {
     public class Route
     {
-        public Route(int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, int stops, string equipment)
+        public Route(int airlineId, int sourceAirportId, int destinationAirportId, bool codeShare, int stops)
         {
             AirlineId = airlineId;
             SourceAirportId = sourceAirportId;
             DestinationAirportId = destinationAirportId;
             CodeShare = codeShare;
             Stops = stops;
-            Equipment = equipment;
         }
 
         /// <summary>
@@ -28,18 +27,13 @@
         public int DestinationAirportId { get; }
 
         /// <summary>
-        ///     Y if this flight is a codeshare (that is, not operated by Airline, but another carrier), empty otherwise.
+        ///     <code>true</code> if this flight is a codeshare (that is, not operated by Airline, but another carrier), <code>false</code> otherwise.
         /// </summary>
         public bool CodeShare { get; }
 
         /// <summary>
         ///     Number of stops on this flight (0 for direct)
         /// </summary>
-        public int Stops { get; set; }
-
-        /// <summary>
-        ///     3-letter codes for plane type(s) generally used on this flight, separated by spaces
-        /// </summary>
-        public string Equipment { get; set; }
+        public int Stops { get; }
     }
 }

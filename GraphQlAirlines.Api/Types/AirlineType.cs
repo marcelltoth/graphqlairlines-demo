@@ -6,34 +6,21 @@ namespace GraphQlAirlines.Api.Types
 {
     public class AirlineType
     {
-        public AirlineType(int id, string name, string? alias, string iata, string icao, string callsign,
-            string countryCode, bool active)
+        public AirlineType(int id, string name, string iata, string countryCode)
         {
             Id = id;
             Name = name;
-            Alias = alias;
             Iata = iata;
-            Icao = icao;
-            Callsign = callsign;
             CountryCode = countryCode;
-            Active = active;
         }
 
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public string? Alias { get; set; }
-
         public string Iata { get; set; }
-
-        public string Icao { get; set; }
-
-        public string Callsign { get; set; }
-
-        public string CountryCode { get; set; }
         
-        public bool Active { get; set; }
+        public string CountryCode { get; set; }
     }
 
     public class AirlineResolvers
