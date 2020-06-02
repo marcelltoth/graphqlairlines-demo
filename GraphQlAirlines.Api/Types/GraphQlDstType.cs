@@ -1,6 +1,6 @@
 ﻿namespace GraphQlAirlines.Api.Types
 {
-    public enum DstType
+    public enum GraphQlDstType
     {
         Unknown,
         None,

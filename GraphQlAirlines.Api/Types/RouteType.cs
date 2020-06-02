@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using GraphQlAirlines.Data;
 using GraphQlAirlines.Data.Models;
+using HotChocolate;
 
 namespace GraphQlAirlines.Api.Types
 {
@@ -32,19 +35,28 @@ namespace GraphQlAirlines.Api.Types
 
     public class RouteResolvers
     {
-        public async Task<Airline> GetAirline()
+        private readonly IAirlineDataStore _dataStore;
+        private readonly IMapper _mapper;
+
+        public RouteResolvers(IAirlineDataStore dataStore, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _dataStore = dataStore;
+            _mapper = mapper;
+        }
+
+        public async Task<AirlineType?> GetAirline([Parent] RouteType route)
+        {
+            return _mapper.Map<AirlineType>(await _dataStore.GetAirlineByIdAsync(route.AirlineId));
         }
         
-        public async Task<Airline> GetSource()
+        public async Task<AirportType?> GetSource([Parent] RouteType route)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<AirportType>(await _dataStore.GetAirportByIdAsync(route.SourceAirportId));
         }
         
-        public async Task<Airline> GetDestination()
+        public async Task<AirportType?> GetDestination([Parent] RouteType route)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<AirportType>(await _dataStore.GetAirportByIdAsync(route.DestinationAirportId));
         }
     }
 }

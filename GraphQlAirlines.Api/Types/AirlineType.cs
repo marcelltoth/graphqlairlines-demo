@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GraphQlAirlines.Data;
 using GraphQlAirlines.Data.Models;
+using HotChocolate;
 
 namespace GraphQlAirlines.Api.Types
 {
@@ -25,19 +30,39 @@ namespace GraphQlAirlines.Api.Types
 
     public class AirlineResolvers
     {
-        public async Task<Airport> GetDestinations()
+        private readonly IAirlineDataStore _dataStore;
+        private readonly IMapper _mapper;
+
+        public AirlineResolvers(IAirlineDataStore dataStore, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _dataStore = dataStore;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<AirportType>> GetDestinations([Parent] AirlineType airline)
+        {
+            return await Task.WhenAll(
+                (await _dataStore.FetchRoutesByAirlineAsync(airline.Id))
+                .Select(route => route.DestinationAirportId)
+                .Distinct()
+                .Select(async airportId =>
+                {
+                    var airport = await _dataStore.GetAirportByIdAsync(airportId);
+                    return _mapper.Map<AirportType>(airport);
+                })
+            );
         }
         
-        public async Task<Country> GetOrigin()
+        public async Task<CountryType> GetOrigin([Parent] AirlineType airline)
         {
-            throw new NotImplementedException();
+            var countries = await _dataStore.FetchAllCountriesAsync();
+            return _mapper.Map<CountryType>(countries.FirstOrDefault(c => c.Name == airline.CountryCode));
         }
         
-        public async Task<Country> GetRoutes()
+        public async Task<IEnumerable<RouteType>> GetRoutes([Parent] AirlineType airline)
         {
-            throw new NotImplementedException();
+            var routes = await _dataStore.FetchRoutesByAirlineAsync(airline.Id);
+            return _mapper.Map<IEnumerable<RouteType>>(routes);
         }
     }
 }

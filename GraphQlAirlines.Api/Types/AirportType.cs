@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GraphQlAirlines.Data;
 using GraphQlAirlines.Data.Models;
+using HotChocolate;
 
 namespace GraphQlAirlines.Api.Types
 {
     public class AirportType
     {
-        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone, DstType dst)
+        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone, GraphQlDstType dst)
         {
             Id = id;
             Name = name;
@@ -52,19 +56,38 @@ namespace GraphQlAirlines.Api.Types
         ///     Daylight savings time. One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N
         ///     (None) or U (Unknown). See also: Help: Time
         /// </summary>
-        public DstType Dst { get; }
+        public GraphQlDstType Dst { get; }
     }
 
     public class AirportResolvers
     {
-        public async Task<IEnumerable<Airline>> GetAirlines()
+        private readonly IAirlineDataStore _dataStore;
+        private readonly IMapper _mapper;
+
+        public AirportResolvers(IAirlineDataStore dataStore, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _dataStore = dataStore;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<AirlineType>> GetAirlines([Parent] Airport airport)
+        {
+            var routes = await GetRoutesInternal(airport);
+            var airlineIds = routes.Select(r => r.AirlineId).Distinct();
+            var airlines = await Task.WhenAll(airlineIds.Select(_dataStore.GetAirlineByIdAsync));
+            return _mapper.Map<IEnumerable<AirlineType>>(airlines.Where(airline => airline != null));
         }
         
-        public async Task<IEnumerable<Airline>> GetRoutes()
+        public async Task<IEnumerable<RouteType>> GetRoutes([Parent] Airport airport)
         {
-            throw new NotImplementedException();
+            var routes = await GetRoutesInternal(airport);
+            return _mapper.Map<IEnumerable<RouteType>>(routes);
+        }
+
+        private async Task<IEnumerable<Route>> GetRoutesInternal(Airport airport)
+        {
+            return (await _dataStore.FetchRoutesByDestinationAirportAsync(airport.AirportId))
+                .Concat(await _dataStore.FetchRoutesBySourceAirportAsync(airport.AirportId));
         }
     }
 }

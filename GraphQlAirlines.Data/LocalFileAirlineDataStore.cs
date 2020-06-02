@@ -79,6 +79,11 @@ namespace GraphQlAirlines.Data
             return (await _dataSet).Routes.Where(r => r.DestinationAirportId == destinationAirportId);
         }
 
+        public async Task<IEnumerable<Country>> FetchAllCountriesAsync()
+        {
+            return (await _dataSet).Countries;
+        }
+
         private static async IAsyncEnumerable<Aircraft> LoadAircraftAsync(string path)
         {
             using var csvReader = CreateCsvReader(path);

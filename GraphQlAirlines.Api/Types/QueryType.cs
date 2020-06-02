@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GraphQlAirlines.Data;
-using GraphQlAirlines.Data.Models;
-using HotChocolate.Types;
 
 namespace GraphQlAirlines.Api.Types
 {
@@ -18,21 +16,22 @@ namespace GraphQlAirlines.Api.Types
     {
 
         private readonly IAirlineDataStore _dataStore;
+        private readonly IMapper _mapper;
 
-        public QueryResolvers(IAirlineDataStore dataStore)
+        public QueryResolvers(IAirlineDataStore dataStore, IMapper mapper)
         {
             _dataStore = dataStore;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<AirlineType>> GetAirlines()
         {
-            return (await _dataStore.FetchAllAirlinesAsync()).Select(a =>
-                new AirlineType(a.AirlineId, a.Name, a.Iata, a.Country));
+            return (await _dataStore.FetchAllAirlinesAsync()).Select(_mapper.Map<AirlineType>);
         }
         
-        public Task<IEnumerable<RouteType>> GetRoutes()
+        public async Task<IEnumerable<RouteType>> GetRoutes()
         {
-            throw new NotImplementedException();
+            return (await _dataStore.FetchAllRoutesAsync()).Select(_mapper.Map<RouteType>);
         }
     }
 }

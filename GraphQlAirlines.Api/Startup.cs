@@ -1,3 +1,5 @@
+using System.Reflection;
+using AutoMapper;
 using GraphQlAirlines.Api.Types;
 using GraphQlAirlines.Data;
 using HotChocolate;
@@ -16,6 +18,8 @@ namespace GraphQlAirlines.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IAirlineDataStore, LocalFileAirlineDataStore>();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
             services.AddGraphQL(
                 SchemaBuilder.New()

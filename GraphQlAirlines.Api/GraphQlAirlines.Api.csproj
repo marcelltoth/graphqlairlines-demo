@@ -9,6 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="9.0.0" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="HotChocolate" Version="10.4.3" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.3" />
       <PackageReference Include="HotChocolate.AspNetCore.GraphiQL" Version="10.4.3" />

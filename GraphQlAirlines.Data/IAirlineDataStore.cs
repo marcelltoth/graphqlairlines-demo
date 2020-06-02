@@ -23,5 +23,7 @@ namespace GraphQlAirlines.Data
         Task<IEnumerable<Route>> FetchRoutesBySourceAirportAsync(int sourceAirportId);
         
         Task<IEnumerable<Route>> FetchRoutesByDestinationAirportAsync(int destinationAirportId);
+
+        Task<IEnumerable<Country>> FetchAllCountriesAsync();
     }
 }
