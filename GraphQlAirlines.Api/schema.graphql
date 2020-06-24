@@ -27,7 +27,6 @@ type Airport{
 	country: Country!
 	iata: String
 	timezone: Float!
-	dst: DstType!
 	airlines: [Airline!]!
 	routes: [Route!]!
 }
@@ -38,15 +37,6 @@ type Country{
 	dafifCode: String!
 }
 
-enum DstType{
-	Unknown
-	None
-	Europe
-	NorthAmerica
-	SouthAmerica
-	Australia
-	NewZealand
-}
 schema{
 	query: Query
 }

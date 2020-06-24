@@ -16,8 +16,6 @@ namespace GraphQlAirlines.Api
 
             CreateMap<Country, CountryType>();
 
-            CreateMap<DstType, GraphQlDstType>();
-
             CreateMap<Route, RouteType>();
         }
     }

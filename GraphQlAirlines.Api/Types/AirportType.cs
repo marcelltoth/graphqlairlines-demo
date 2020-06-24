@@ -10,8 +10,7 @@ namespace GraphQlAirlines.Api.Types
 {
     public class AirportType
     {
-        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone,
-            GraphQlDstType dst)
+        public AirportType(int id, string name, string city, string country, string? iata, decimal timezone)
         {
             Id = id;
             Name = name;
@@ -19,7 +18,6 @@ namespace GraphQlAirlines.Api.Types
             Country = country;
             Iata = iata;
             Timezone = timezone;
-            Dst = dst;
         }
 
         /// <summary>
@@ -52,12 +50,6 @@ namespace GraphQlAirlines.Api.Types
         ///     Hours offset from UTC. Fractional hours are expressed as decimals, eg. India is 5.5.
         /// </summary>
         public decimal Timezone { get; }
-
-        /// <summary>
-        ///     Daylight savings time. One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N
-        ///     (None) or U (Unknown). See also: Help: Time
-        /// </summary>
-        public GraphQlDstType Dst { get; }
     }
 
     public class AirportResolvers
